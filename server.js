@@ -22,8 +22,14 @@ var User = mongoose.model('User', UserSchema);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', function(req, res, next) {
-  res.json("Home Page!!");
+app.get('/:name', function(req, res, next) {
+  User.find({ name: req.params.name }, function(err, foundUser) {
+    if (foundUser) {
+      res.json(foundUser);
+    } else {
+      res.json("User not found.")
+    }
+  });
 });
 
 app.post('/create-user', function(req, res, next) {
